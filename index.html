@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter Example</title>
+    <script>
+        // Function to get the cookie value
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+                while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
+                if (cookie.indexOf(nameEQ) === 0) return parseInt(cookie.substring(nameEQ.length, cookie.length), 10);
+            }
+            return 0; // Default to 0 if cookie not found
+        }
+
+        // Function to set the cookie
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        // Initialize the counter
+        let counter = getCookie("pageCounter") + 1; // Increment counter
+        setCookie("pageCounter", counter, 7); // Store in cookie for 7 days
+
+        // Update the display
+        window.onload = function() {
+            document.getElementById("counter").textContent = counter;
+        };
+    </script>
+</head>
+<body>
+    <h1>Page Refresh Counter</h1>
+    <p>You have refreshed the page <span id="counter">0</span> times.</p>
+</body>
+</html>

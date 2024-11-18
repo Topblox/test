@@ -3,40 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Counter Example</title>
-    <script>
-        // Function to get the cookie value
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i];
-                while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
-                if (cookie.indexOf(nameEQ) === 0) return parseInt(cookie.substring(nameEQ.length, cookie.length), 10);
-            }
-            return 0; // Default to 0 if cookie not found
+    <title>Word Unscramble Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
         }
-
-        // Function to set the cookie
-        function setCookie(name, value, days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            const expires = "expires=" + date.toUTCString();
-            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        .container {
+            margin-top: 50px;
         }
-
-        // Initialize the counter
-        let counter = getCookie("pageCounter") + 1; // Increment counter
-        setCookie("pageCounter", counter, 7); // Store in cookie for 7 days
-
-        // Update the display
-        window.onload = function() {
-            document.getElementById("counter").textContent = counter;
-        };
-    </script>
+        #scrambled-word {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            font-size: 1.2rem;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+        button {
+            font-size: 1.2rem;
+            padding: 5px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: green;
+        }
+    </style>
 </head>
 <body>
-    <h1>Page Refresh Counter</h1>
-    <p>You have refreshed the page <span id="counter">0</span> times.</p>
+    <div class="container">
+        <h1>Unscramble the Word</h1>
+        <div id="scrambled-word"></div>
+        <input type="text" id="guess" placeholder="Your guess">
+        <button onclick="checkAnswer()">Submit</button>
+        <div id="message"></div>
+    </div>
+    <script>
+        const words = [
+            { scrambled: "lphaneot", answer: "elephant" },
+            { scrambled: "acretuom", answer: "creature" },
+            { scrambled: "ognidiwn", answer: "windowing" },
+            { scrambled: "ttseiyvcra", answer: "creativity" },
+            { scrambled: "margorp", answer: "program" }
+        ];
+
+        const word = words[Math.floor(Math.random() * words.length)];
+        document.getElementById("scrambled-word").textContent = word.scrambled;
+
+        function checkAnswer() {
+            const guess = document.getElementById("guess").value.toLowerCase();
+            const message = document.getElementById("message");
+            if (guess === word.answer) {
+                message.textContent = "🎉 You Win! Correct Answer!";
+            } else {
+                message.textContent = "❌ Incorrect. Try again!";
+                message.style.color = "red";
+            }
+        }
+    </script>
 </body>
 </html>
